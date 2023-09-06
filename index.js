@@ -39,23 +39,31 @@ buttonDoc.addEventListener("click", function () {
     
     // DEFINE which data base e.g.(emotionsInDb) then name that database
     
-inputDoc.value = "";
-  
+    clearInput()
+
  })
 
  onValue(emotionsInDb, function(snapshot) {
-     let emotionsArr = Object.entries(snapshot.val())
-    
-     ulDoc.innerHTML = ""
 
-     for (let x = 0; x < emotionsArr.length; x++) {
-         
-         let currentEmotions = emotionsArr[x];
-         let currentEmotionsId = currentEmotions[0]
-         let currentEmotionsValue = currentEmotions[1]
-        
-         appendToEmotions(currentEmotions)
-     }
+    if (snapshot.exists()) {
+
+        let emotionsArr = Object.entries(snapshot.val())
+    
+        clearUl()
+   
+        for (let x = 0; x < emotionsArr.length; x++) {
+            
+            let currentEmotions = emotionsArr[x];
+            let currentEmotionsId = currentEmotions[0]
+            let currentEmotionsValue = currentEmotions[1]
+           
+            appendToEmotions(currentEmotions)
+        }
+
+    } else {
+        ulDoc.textContent = " NO EMOTIONS YET?"
+    }
+ 
  })
     
 
@@ -77,6 +85,13 @@ inputDoc.value = "";
     }
 
 
+    function clearInput() {
+        inputDoc.value = "";
+    }
+
+  function clearUl() {
+    ulDoc.innerHTML = ""
+  }
 
 
 
@@ -85,5 +100,3 @@ inputDoc.value = "";
 
 
 
-
-    
