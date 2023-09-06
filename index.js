@@ -7,7 +7,7 @@
 
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
 
-import {getDatabase, ref, push, onValue} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+import {getDatabase, ref, push, onValue, remove} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
 
 const UrlOfDatabase = {
     databaseURL: "https://ementor-6c8f1-default-rtdb.firebaseio.com/"
@@ -44,19 +44,46 @@ inputDoc.value = "";
  })
 
  onValue(emotionsInDb, function(snapshot) {
-     let emotionsArr = Object.values(snapshot.val())
+     let emotionsArr = Object.entries(snapshot.val())
     
-     
+     ulDoc.innerHTML = ""
+
      for (let x = 0; x < emotionsArr.length; x++) {
          
          let currentEmotions = emotionsArr[x];
+         let currentEmotionsId = currentEmotions[0]
+         let currentEmotionsValue = currentEmotions[1]
         
-         appendBookToBooksListEl(currentEmotions)
+         appendToEmotions(currentEmotions)
      }
  })
     
 
- function appendBookToBooksListEl(parameter) {
-    ulDoc.innerHTML += `<li>${parameter}</li>`
+ function appendToEmotions(parameter) {
+    let emotionsId = parameter[0]
+    let emotionsValue = parameter[1]
+
+    let newLi = document.createElement('li')
+
+   newLi.textContent = emotionsValue
+
+    newLi.addEventListener('dblclick', function() {
+        let dbEmotionsLocation = ref(database, `emotions/${emotionsId}`)
+        remove(dbEmotionsLocation)
+    })
+
+     ulDoc.append(newLi)
+
     }
 
+
+
+
+
+
+
+
+
+
+
+    
